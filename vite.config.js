@@ -14,4 +14,14 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
   ],
+   server: {
+    proxy: {
+      "/gios": {
+        target: "https://api.gios.gov.pl",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/gios/, ""),
+      },
+    },
+  },
 })

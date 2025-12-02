@@ -1,0 +1,5 @@
+export const selectIndexByStationId = (state, stationId) =>
+  state.indices.byStationId[stationId];
+
+export const selectIndexStatusByStationId = (state, stationId) =>
+  state.indices.statusByStationId[stationId] ?? "idle";

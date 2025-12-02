@@ -1,4 +1,4 @@
-import { Map, Satellite, Locate, LocateOff } from "lucide-react";
+import { Map, SatelliteDish, Locate, LocateOff } from "lucide-react";
 
 const MapButton = props => {
 
@@ -15,7 +15,7 @@ const MapButton = props => {
             case 'satelliteLayer':
                 return (
                      <div className="flex items-center justify-center">
-                        <Satellite className="w-5.5 h-5.5"/>
+                        <SatelliteDish className="w-5.5 h-5.5"/>
                     </div>
                 );
             case 'geoLocation':

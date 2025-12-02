@@ -1,13 +1,16 @@
 import {useEffect, useState} from "react";
-
 import MapView from "./MapView";
 import { useParams, Outlet } from "react-router";
 import MapButton from "./ui/MapButton";
 import LocationBlockedModal from "./ui/LocationBlockedModal";
 import ThreeDots from "../../assets/loaders/threeDots.svg?react";
+import { useStationsBootstrap } from "../stations/useStationsbootStrap.js";
 
 const MapPage = () => {
     const { stationId } = useParams();
+
+     const { stations, status, error } = useStationsBootstrap();
+
 
     const [selectedMapLayer, setSelectedMapLayer] = useState(() => {
         // Initialize from local storage or default to "osm"
@@ -145,6 +148,7 @@ const MapPage = () => {
            selectedStationId={stationId} 
            selectedMapLayer={selectedMapLayer}
            center={mapCenter}
+           stations={stations}
           />
           <Outlet />
         </div>

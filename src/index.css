@@ -1,2 +1,22 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+
+.station-marker__wrap svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.station-marker__wrap {
+  color: var(--marker-color);
+}
+
+.station-marker__wrap svg [fill="currentColor"] {
+  fill: currentColor;
+}
+.station-marker__wrap svg [stroke="currentColor"] {
+  stroke: currentColor;
+}
+.station-marker__wrap {
+  cursor: pointer;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { MapContainer, ZoomControl, useMap } from "react-leaflet";
 import TileLayerSwitcher from "./layers/TileLayerSwitcher";
+import StationsLayer from "./layers/StationsLayer";
 
 const MapCenterUpdater = ({ center }) => {
     const map = useMap();
@@ -20,7 +21,7 @@ const MapCenterUpdater = ({ center }) => {
 };
 
 const MapView = props => {
-    const { selectedStationId, selectedMapLayer, center } = props;
+    const { selectedStationId, selectedMapLayer, center, stations } = props;
 
     return (
         <MapContainer 
@@ -35,6 +36,7 @@ const MapView = props => {
              <TileLayerSwitcher 
                provider={selectedMapLayer}
              />
+             <StationsLayer stations={stations} />
              <ZoomControl position="bottomright" />
         </MapContainer>
     );
