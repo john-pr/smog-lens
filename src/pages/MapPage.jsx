@@ -1,12 +1,12 @@
 import {useEffect, useState, useCallback, useMemo} from "react";
-import MapView from "./MapView";
+import MapView from "../features/map/MapView.jsx";
 import { useParams, Outlet } from "react-router";
-import MapButton from "./ui/MapButton";
-import LocationBlockedModal from "./ui/LocationBlockedModal";
-import ThreeDots from "../../assets/loaders/threeDots.svg?react";
-import { useStationsAndIndicesBootstrap } from "../stations/useStationsAndIndicesBootstrap.js";
-import { useIndicesForViewport } from "../stations/useIndicesForViewport.js";
-import { useDebouncedValue } from "../../app/hooks.js";
+import MapButton from "../features/map/ui/MapButton.jsx";
+import LocationBlockedModal from "../features/map/ui/LocationBlockedModal.jsx";
+import ThreeDots from "../assets/loaders/threeDots.svg?react";
+import { useStationsAndIndicesBootstrap } from "../features/stations/hooks/useStationsAndIndicesBootstrap.js";
+import { useIndicesForViewport } from "../features/stations/hooks/useIndicesForViewport.js";
+import { useDebouncedValue } from "../app/hooks.js";
 
 const MapPage = () => {
     const { stationId } = useParams();

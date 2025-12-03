@@ -1,10 +1,10 @@
 import L from "leaflet";
 import { Marker } from "react-leaflet";
-import circleSvg from "../../../assets/mapMarkers/circleMarker.svg?raw";
-import { getMarkerColorFromIndexValue } from "../utils/colors.js";
+import circleSvg from "../../../../assets/mapMarkers/circleMarker.svg?raw";
+import { getMarkerColorFromIndexValue } from "../../utils/colors.js";
 import { useNavigate } from "react-router";
 import { useMemo, useRef, useEffect } from "react";
-import StationPopup from "../ui/StationPopup.jsx";
+import StationPopup from "../StationPopup.jsx";
 
 const cleanSvg = circleSvg
   .replace(/<\?xml.*?\?>/g, "")

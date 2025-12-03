@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { MapContainer, ZoomControl, useMap } from "react-leaflet";
-import TileLayerSwitcher from "./layers/TileLayerSwitcher";
+import TileLayerSwitcher from "./ui/layers/TileLayerSwitcher";
 import MapEvents from "./MapEvents.jsx";
-import StationsClusterLayer from "./layers/StationsClusterLayer";
+import StationsClusterLayer from "./ui/layers/StationsClusterLayer";
 
 const MapCenterUpdater = ({ center }) => {
     const map = useMap();
@@ -24,7 +24,6 @@ const MapCenterUpdater = ({ center }) => {
 const MapView = props => {
     const { selectedStationId, selectedMapLayer, center, stations, indicesById, onViewPortChange } = props;
 
-    const useClusters = true;
 
     return (
         <MapContainer 

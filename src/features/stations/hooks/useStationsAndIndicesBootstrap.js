@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useStationsBootstrap } from "./useStationsBootstrap.js";
-import { useAppDispatch, useAppSelector } from "../../app/hooks.js";
-import { fetchIndexByStationId } from "./indicesSlice.js";
-import { selectIndicesById } from "./indicesSelectors.js";
+import { useStationsBootstrap } from "./useStationsBootStrap.js";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.js";
+import { fetchIndexByStationId } from "../model/indicesSlice.js";
+import { selectIndicesById } from "../model/indicesSelectors.js";
 
 export function useStationsAndIndicesBootstrap() {
   const dispatch = useAppDispatch();

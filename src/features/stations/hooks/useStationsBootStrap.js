@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks.js";
-import { fetchStations } from "./stationsSlice.js";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks.js";
+import { fetchStations } from "../model/stationsSlice.js";
 import {
   selectStationsStatus,
   selectStationsError,
   selectStationsList,
-} from "./selectors.js";
+} from "../model/selectors.js";
 
 export function useStationsBootstrap() {
   const dispatch = useAppDispatch();

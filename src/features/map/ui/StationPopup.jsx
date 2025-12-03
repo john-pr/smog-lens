@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Popup } from "react-leaflet";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks.js";
-import { fetchStationDetails } from "../../../features/stationDetails/stationDetailsSlice.js";
+import { fetchStationDetails } from "../../stationDetails/model/stationDetailsSlice.js";
 import {
   selectDetailsForStation,
   selectDetailsStatusForStation,
-} from "../../../features/stationDetails/selectors.js";
+} from "../../stationDetails/model/selectors.js";
 import { useTranslation } from "react-i18next";
 
 const StationPopup = ({ stationId, stationName, city, address, indexValue }) => {
