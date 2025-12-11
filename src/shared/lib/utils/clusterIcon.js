@@ -3,35 +3,32 @@ import { getMarkerColorFromIndexValue } from "./colors.js";
 
 
 function getDominantIndexValue(childMarkers) {
-  const counts = new Map();
-  let hasAnyUsable = false;
+  const validIndices = [];
 
   childMarkers.forEach((marker) => {
     const v = marker.options.indexValue;
 
-    if (v === null || v === undefined || v < 0) return;
+    if (v === null || v === undefined) return;
+    if (typeof v === 'number' && v < 0) return;
 
-    hasAnyUsable = true;
-    counts.set(v, (counts.get(v) || 0) + 1);
+    validIndices.push(v);
   });
 
-  if (!hasAnyUsable) return null;
+  if (validIndices.length === 0) return null;
 
-  let dominant = null;
-  let maxCount = -1;
-  counts.forEach((count, value) => {
-    if (count > maxCount) {
-      maxCount = count;
-      dominant = value;
-    }
-  });
-  return dominant;
+  // Return the worst (highest) index value to represent the worst air quality in cluster
+  return Math.max(...validIndices);
 }
 
 export function createClusterIcon(cluster) {
   const children = cluster.getAllChildMarkers();
 
   const dominantIndexValue = getDominantIndexValue(children);
+
+  // If no dominant index value (indices loading), use a neutral color
+  // getDominantIndexValue returns null when:
+  // 1) no markers with valid indices exist yet (indices still loading)
+  // 2) all markers have null/undefined indexValue
   const color = getMarkerColorFromIndexValue(dominantIndexValue);
   const count = cluster.getChildCount();
 

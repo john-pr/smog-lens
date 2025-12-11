@@ -53,49 +53,49 @@ const StationMarker = ({
 
   return (
     <Marker
-      ref={markerRef}
-      position={[station.lat, station.lon]}
-      icon={icon}
-      eventHandlers={{
-        click: (e) => {
-          // Skip if this station is already selected
-          if (isSelected) {
+        ref={markerRef}
+        position={[station.lat, station.lon]}
+        icon={icon}
+        eventHandlers={{
+          click: (e) => {
+            // Skip if this station is already selected
+            if (isSelected) {
+              L.DomEvent.stopPropagation(e);
+              return;
+            }
+
+            navigate(`/station/${station.id}`);
+            // Longer duration when zoomed out, shorter when already zoomed in
+            const currentZoom = map.getZoom();
+            const targetZoom = Math.max(currentZoom, 14); // Don't zoom out if already zoomed in
+            const duration = currentZoom >= 12 ? 0.5 : currentZoom >= 9 ? 0.9 : 1.2;
+            map.flyTo([station.lat, station.lon], targetZoom, { duration });
+
+            // Open popup after flyTo completes using moveend event
+            const onMoveEnd = () => {
+              map.off('moveend', onMoveEnd);
+              // Small delay to let marker settle after cluster rebuild
+              setTimeout(() => {
+                markerRef.current?.openPopup();
+              }, 50);
+            };
+            map.on('moveend', onMoveEnd);
+          },
+          dblclick: (e) => {
+            // Prevent double-click zoom on markers
             L.DomEvent.stopPropagation(e);
-            return;
-          }
-
-          navigate(`/station/${station.id}`);
-          // Longer duration when zoomed out, shorter when already zoomed in
-          const currentZoom = map.getZoom();
-          const targetZoom = Math.max(currentZoom, 14); // Don't zoom out if already zoomed in
-          const duration = currentZoom >= 12 ? 0.5 : currentZoom >= 9 ? 0.9 : 1.2;
-          map.flyTo([station.lat, station.lon], targetZoom, { duration });
-
-          // Open popup after flyTo completes using moveend event
-          const onMoveEnd = () => {
-            map.off('moveend', onMoveEnd);
-            // Small delay to let marker settle after cluster rebuild
-            setTimeout(() => {
-              markerRef.current?.openPopup();
-            }, 50);
-          };
-          map.on('moveend', onMoveEnd);
-        },
-        dblclick: (e) => {
-          // Prevent double-click zoom on markers
-          L.DomEvent.stopPropagation(e);
-        },
-      }}
-      options={{ indexValue }}
-    >
-      <StationPopup
-        stationId={station.id}
-        stationName={station.name}
-        city={station.city}
-        address={station.address}
-        indexValue={indexValue}
-      />
-    </Marker>
+          },
+        }}
+        options={{ indexValue }}
+      >
+        <StationPopup
+          stationId={station.id}
+          stationName={station.name}
+          city={station.city}
+          address={station.address}
+          indexValue={indexValue}
+        />
+      </Marker>
   );
 };
 

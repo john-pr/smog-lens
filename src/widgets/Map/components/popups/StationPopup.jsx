@@ -68,6 +68,15 @@ const StationPopup = ({ stationId, stationName, indexValue }) => {
             <div>
               {t("station_popup.pm25")}: {details.pm25 ?? t("station_popup.no_data")} µg/m³
             </div>
+            <div>
+              {t("station_popup.o3")}: {details.o3 ?? t("station_popup.no_data")} µg/m³
+            </div>
+            <div>
+              {t("station_popup.no2")}: {details.no2 ?? t("station_popup.no_data")} µg/m³
+            </div>
+            <div>
+              {t("station_popup.so2")}: {details.so2 ?? t("station_popup.no_data")} µg/m³
+            </div>
           </>
         )}
 

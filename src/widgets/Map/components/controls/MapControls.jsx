@@ -1,4 +1,5 @@
 import MapButton from "./MapButton.jsx";
+import Legend from "../overlays/Legend.jsx";
 
 const FloatingBtn = ({ className, children, handleClick }) => (
   <button
@@ -21,16 +22,18 @@ const MapControls = props => {
 
   return (
     <>
-      <FloatingBtn 
+      <Legend />
+
+      <FloatingBtn
        className="top-2.5"
        handleClick={toggleTheme}>
         <MapButton
           type={isDark ? "darkTheme" : "lightTheme"}
-          
+
         />
       </FloatingBtn>
 
-      <FloatingBtn 
+      <FloatingBtn
         className="bottom-23"
         handleClick={handleGeoButtonClick}>
         <MapButton
@@ -38,7 +41,7 @@ const MapControls = props => {
         />
       </FloatingBtn>
 
-      <FloatingBtn 
+      <FloatingBtn
         className="bottom-32"
         handleClick={() =>
             setSelectedMapLayer(selectedMapLayer === "osm" ? "sat" : "osm")

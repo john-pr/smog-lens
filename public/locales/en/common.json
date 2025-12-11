@@ -17,6 +17,17 @@
   "station_popup.loading_measurements": "Loading measurements…",
   "station_popup.pm10": "PM10",
   "station_popup.pm25": "PM2.5",
+  "station_popup.o3": "O₃",
+  "station_popup.no2": "NO₂",
+  "station_popup.so2": "SO₂",
   "station_popup.no_data": "no data",
-  "station_popup.no_measurements": "No measurement data"
+  "station_popup.no_measurements": "No measurement data",
+  "legend.title": "Air Quality Index",
+  "legend.very_good": "Very Good",
+  "legend.good": "Good",
+  "legend.moderate": "Moderate",
+  "legend.sufficient": "Sufficient",
+  "legend.bad": "Bad",
+  "legend.very_bad": "Very Bad",
+  "legend.no_data": "No Data"
 }

@@ -17,6 +17,17 @@
   "station_popup.loading_measurements": "Ładowanie pomiarów…",
   "station_popup.pm10": "PM10",
   "station_popup.pm25": "PM2.5",
+  "station_popup.o3": "O₃",
+  "station_popup.no2": "NO₂",
+  "station_popup.so2": "SO₂",
   "station_popup.no_data": "brak danych",
-  "station_popup.no_measurements": "Brak danych pomiarowych"
+  "station_popup.no_measurements": "Brak danych pomiarowych",
+  "legend.title": "Indeks Jakości Powietrza",
+  "legend.very_good": "Bardzo dobry",
+  "legend.good": "Dobry",
+  "legend.moderate": "Umiarkowany",
+  "legend.sufficient": "Dostateczny",
+  "legend.bad": "Zły",
+  "legend.very_bad": "Bardzo zły",
+  "legend.no_data": "Brak danych"
 }
