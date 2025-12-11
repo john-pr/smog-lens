@@ -104,16 +104,10 @@ const Legend = () => {
             >
               <ChevronDown className="w-4 h-4 text-gray-900 -rotate-90 dark:text-gray-100" strokeWidth={1.5} />
             </button>
-            <div className="flex flex-col gap-0">
-              {/* <div className="px-2 py-1 my-1 border-b border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.1)]">
-                <span className="text-xs font-semibold text-gray-900 dark:text-gray-100">
-                  {t("legend.title")}
-                </span>
-              </div> */}
+            <div className="flex flex-col">
                <div className="flex flex-row-reverse items-center gap-2 whitespace-nowrap">
                     <div
                       className="w-5 h-6 shrink-0"
-                    
                     />
                     <span className="text-xs px-2 py-2 my-0.5 border-b border-[rgba(0,0,0,0.2)] text-center text-gray-900 dark:text-gray-100 dark:border-[rgba(255,255,255,0.2)]">
                       {t("legend.title")}

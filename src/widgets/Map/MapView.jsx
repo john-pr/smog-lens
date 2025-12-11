@@ -3,7 +3,6 @@ import { MapContainer, ZoomControl, useMap } from "react-leaflet";
 import TileLayerSwitcher from "./layers/TileLayerSwitcher";
 import MapEvents from "./MapEvents";
 import StationsClusterLayer from "./layers/StationsClusterLayer";
-import { Legend } from "./components/overlays";
 
 const MapCenterUpdater = ({ center, flyToStation }) => {
     const map = useMap();
@@ -54,7 +53,6 @@ const MapView = props => {
                 selectedStationId={selectedStationId}
                 isInitialUrlEntry={flyToStation}
              />
-             <Legend />
              <ZoomControl position="bottomright" />
         </MapContainer>
     );

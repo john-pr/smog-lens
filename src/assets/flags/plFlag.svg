@@ -1,0 +1,7 @@
+<!-- Flag of Poland -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3">
+  <!-- White top -->
+  <rect width="4" height="3" fill="#FFFFFF"/>
+  <!-- Red bottom -->
+  <rect y="1.5" width="4" height="1.5" fill="#D4213D"/>
+</svg>

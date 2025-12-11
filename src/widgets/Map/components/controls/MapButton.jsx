@@ -5,6 +5,7 @@ import {
   LocateOff,
   Sun,
   Moon,
+  Globe,
 } from "lucide-react";
 
 const ICONS = {
@@ -14,6 +15,7 @@ const ICONS = {
   geoLocationDisabled: LocateOff,
   lightTheme: Moon,
   darkTheme: Sun,
+  language: Globe,
 };
 
 const SIZE = {
@@ -23,6 +25,7 @@ const SIZE = {
   geoLocationDisabled: "w-5 h-5",
   lightTheme: "w-5 h-5",
   darkTheme: "w-5 h-5",
+  language: "w-5 h-5",
 };
 
 const MapButton = ({ type, className = "" }) => {

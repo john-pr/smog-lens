@@ -1,5 +1,6 @@
 import MapButton from "./MapButton.jsx";
 import Legend from "../overlays/Legend.jsx";
+import LanguageSwitcher from "../overlays/LanguageSwitcher.jsx";
 
 const FloatingBtn = ({ className, children, handleClick }) => (
   <button
@@ -23,7 +24,8 @@ const MapControls = props => {
   return (
     <>
       {/* Top controls */}
-      <div className="absolute top-2.5 right-2.5 flex flex-col gap-2.5">
+      <div className="absolute top-2.5 right-2.5 flex flex-row gap-1.25">
+        <LanguageSwitcher />
         <FloatingBtn
          handleClick={toggleTheme}>
           <MapButton
@@ -35,7 +37,6 @@ const MapControls = props => {
       {/* Bottom controls */}
       <div className="absolute bottom-24 right-2.5 flex flex-col gap-1.25">
         <Legend />
-
         <FloatingBtn
           handleClick={handleGeoButtonClick}>
           <MapButton
