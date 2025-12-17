@@ -45,16 +45,7 @@ const StationsClusterLayer = ({
 
       // Show circle when map finishes moving, but only if zoom is past clustering threshold
       const onMoveEnd = () => {
-        if (map.getZoom() >= 14) {
-          setShowCircle(true);
-        } else {
-          setShowCircle(false);
-        }
-      };
-
-      // Also listen to zoom changes to hide/show circle immediately
-      const onZoom = () => {
-        if (map.getZoom() >= 14) {
+        if (map.getZoom() >= 11) {
           setShowCircle(true);
         } else {
           setShowCircle(false);
@@ -62,10 +53,8 @@ const StationsClusterLayer = ({
       };
 
       map.on('moveend', onMoveEnd);
-      map.on('zoom', onZoom);
       return () => {
         map.off('moveend', onMoveEnd);
-        map.off('zoom', onZoom);
       };
     } else {
       setShowCircle(false);

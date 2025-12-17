@@ -35,6 +35,36 @@ const panelAnimationStyles = `
   .panel-exiting {
     animation: slideOutLeft 0.3s ease-out forwards;
   }
+
+  .panel-scrollable::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .panel-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .panel-scrollable::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.6);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .panel-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.8);
+    background-clip: content-box;
+  }
+
+  .dark .panel-scrollable::-webkit-scrollbar-thumb {
+    background-color: rgba(75, 85, 99, 0.6);
+    background-clip: content-box;
+  }
+
+  .dark .panel-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(55, 65, 81, 0.8);
+    background-clip: content-box;
+  }
 `;
 
 const LeftPanel = ({ stationId, indicesById }) => {
@@ -67,8 +97,8 @@ const LeftPanel = ({ stationId, indicesById }) => {
   return (
     <>
       <style>{panelAnimationStyles}</style>
-      <div className={`absolute top-0 left-0 z-40 h-screen overflow-y-auto bg-white bg-clip-padding w-80 dark:bg-gray-700 border-r-2 border-[rgba(0,0,0,0.2)] shadow-sm ${isExiting ? 'panel-exiting' : 'panel-entering'}`}>
-      <div className="sticky top-0 p-6 bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+      <div className={`absolute top-0 left-0 z-40 h-screen overflow-y-auto bg-white bg-clip-padding w-80 dark:bg-gray-700 border-r-2 border-[rgba(0,0,0,0.2)] shadow-sm panel-scrollable ${isExiting ? 'panel-exiting' : 'panel-entering'}`}>
+      <div className="sticky top-0 z-50 p-6 bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="text-lg font-semibold text-gray-900 truncate dark:text-white">

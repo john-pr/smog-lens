@@ -1,21 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { stationDetailsApi } from "./api.js";
 
-function pickLatestValue(sensorDataResponse) {
+function extractMeasurements(sensorDataResponse) {
   const valuesArray =
     sensorDataResponse?.["Lista danych pomiarowych"] ??
     sensorDataResponse?.values ??
     [];
 
-  const firstNonNull = valuesArray.find((item) => {
-    const vPolish = item?.["Wartość"];
-    const vEnglish = item?.value;
-    return vPolish != null || vEnglish != null;
-  });
+  // Filter to last 8 hours, sorted oldest to newest
+  const now = new Date();
+  const eightHoursAgo = new Date(now.getTime() - 8 * 60 * 60 * 1000);
 
-  if (!firstNonNull) return null;
+  return valuesArray
+    .map((item) => {
+      const dateStr = item?.["Data"] ?? item?.date ?? null;
+      const value = item?.["Wartość"] ?? item?.value ?? null;
+      const stationCode = item?.["Kod stanowiska"] ?? item?.["Station Code"] ?? null;
 
-  return firstNonNull?.["Wartość"] ?? firstNonNull?.value ?? null;
+      if (!dateStr || value == null) return null;
+
+      const dateObj = new Date(dateStr);
+      return {
+        dateString: dateObj.toISOString(),
+        value: value,
+        stationCode: stationCode,
+      };
+    })
+    .filter((item) => {
+      if (!item) return false;
+      const itemDate = new Date(item.dateString);
+      return itemDate >= eightHoursAgo;
+    })
+    .sort((a, b) => new Date(a.dateString) - new Date(b.dateString)); // Oldest to newest
 }
 
 
@@ -60,11 +76,11 @@ export const fetchStationDetails = createAsyncThunk(
     return {
     stationId: String(stationId),
     details: {
-        pm10: pm10Data ? pickLatestValue(pm10Data) : null,
-        pm25: pm25Data ? pickLatestValue(pm25Data) : null,
-        o3:   o3Data  ? pickLatestValue(o3Data)  : null,
-        no2:  no2Data ? pickLatestValue(no2Data) : null,
-        so2:  so2Data ? pickLatestValue(so2Data) : null,
+        pm10: pm10Data ? extractMeasurements(pm10Data) : [],
+        pm25: pm25Data ? extractMeasurements(pm25Data) : [],
+        o3:   o3Data  ? extractMeasurements(o3Data)  : [],
+        no2:  no2Data ? extractMeasurements(no2Data) : [],
+        so2:  so2Data ? extractMeasurements(so2Data) : [],
     },
     };
     } catch (errorObject) {
