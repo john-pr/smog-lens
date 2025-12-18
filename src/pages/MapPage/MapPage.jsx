@@ -103,14 +103,52 @@ const MapPage = () => {
         }
         setIsLayerReady(true);
 
-        // Initialize geoConsent as null (prompt state) - don't query permissions on mount
-        // iOS Safari requires user gesture before showing permission prompt
+        // Initialize geoConsent as null (prompt state)
         setGeoConsent(null);
         setIsBrowserBlocked(false);
     }, []);
 
+    // Auto-request location on mobile devices on page load
+    useEffect(() => {
+        if (!isLayerReady) return;
+
+        const isMobileDevice = isIOS() || isAndroid();
+        if (isMobileDevice && "geolocation" in navigator) {
+            console.log("Mobile device detected, requesting location...");
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    console.log("Location success on load:", position.coords);
+                    const newCenter = [position.coords.latitude, position.coords.longitude];
+                    setMapCenter(newCenter);
+                    setGeoConsent(true);
+                },
+                (error) => {
+                    console.error("Location request failed on load. Error code:", error.code);
+                    // User denied or location unavailable - use default center
+                    if (error.code === error.PERMISSION_DENIED) {
+                        console.log("Location permission denied, using default center");
+                        setGeoConsent(false);
+                    }
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+    }, [isLayerReady]);
+
     const isIOS = () => {
         return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    };
+
+    const isAndroid = () => {
+        return /Android/.test(navigator.userAgent);
+    };
+
+    const isMobile = () => {
+        return isIOS() || isAndroid();
     };
 
     const redirectToIOSSettings = () => {
@@ -120,12 +158,9 @@ const MapPage = () => {
     };
 
     const getUserLocation = (shouldZoom = false) => {
-        console.log("getUserLocation called. IsIOS:", isIOS(), "HTTPS:", window.location.protocol === 'https:');
-
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    console.log("Location success:", position.coords);
                     const newCenter = [position.coords.latitude, position.coords.longitude];
                     setMapCenter(newCenter);
                     setGeoConsent(true);
@@ -134,11 +169,7 @@ const MapPage = () => {
                     if (shouldZoom) setMapZoom(13);
                 },
                 (error) => {
-                    console.error("Geolocation error code:", error.code);
-                    console.error("Error getting location:", error);
-
                     if (error.code === error.PERMISSION_DENIED) {
-                        console.error("Location permission was DENIED by user");
                         setGeoConsent(false);
                         setIsBrowserBlocked(true);
 
@@ -158,8 +189,6 @@ const MapPage = () => {
                     maximumAge: 0
                 }
             );
-        } else {
-            console.warn("Geolocation is not supported in this browser");
         }
     };
 
@@ -168,15 +197,11 @@ const MapPage = () => {
     };
 
     const handleGeoButtonClick = () => {
-        console.log("handleGeoButtonClick - geoConsent:", geoConsent, "isBrowserBlocked:", isBrowserBlocked);
-
         if (geoConsent === false || isBrowserBlocked) {
             // Location is blocked, show instructions modal
-            console.log("Location is blocked, showing modal");
             setShowBlockedModal(true);
         } else {
             // Location enabled or prompt state - try to get location and zoom
-            console.log("Calling getUserLocation");
             getUserLocation(true);
         }
     };
@@ -212,13 +237,6 @@ const MapPage = () => {
               onClose={handleBlockedModalClose}
             />
           )}
-          {/* Debug overlay */}
-          <div className="fixed bottom-2.5 left-2.5 bg-black/80 text-white text-xs p-2 rounded max-w-xs z-50 font-mono">
-            <div>geoConsent: {JSON.stringify(geoConsent)}</div>
-            <div>isBrowserBlocked: {isBrowserBlocked}</div>
-            <div>isIOS: {isIOS()}</div>
-            <div>protocol: {window.location.protocol}</div>
-          </div>
           <LeftPanel stationId={stationId} indicesById={indicesById} />
           <MapControls
             geoConsent={geoConsent}

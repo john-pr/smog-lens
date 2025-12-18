@@ -22,11 +22,6 @@ const FloatingBtn = ({ className, children, handleClick }) => (
 const MapControls = ({ geoConsent, handleGeoButtonClick, selectedMapLayer, setSelectedMapLayer }) => {
   const { isDark, toggleTheme } = useTheme();
 
-  const handleClearAndReload = () => {
-    localStorage.clear();
-    window.location.reload();
-  };
-
   return (
     <>
       {/* Top controls */}
@@ -37,11 +32,6 @@ const MapControls = ({ geoConsent, handleGeoButtonClick, selectedMapLayer, setSe
           <MapButton
             type={isDark ? "darkTheme" : "lightTheme"}
           />
-        </FloatingBtn>
-        <FloatingBtn
-          title="Debug: Clear localStorage and reload"
-          handleClick={handleClearAndReload}>
-          <span className="text-xs font-bold">⟲</span>
         </FloatingBtn>
       </div>
 
