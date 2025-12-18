@@ -68,11 +68,7 @@ const stationsSlice = createSlice({
     error: null,
     fetchedAt: null,
   },
-  reducers: {
-    setStationsForViewPort(state, action) {
-      state.list = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchStations.pending, (state) => {
       state.status = "loading";
@@ -93,5 +89,4 @@ const stationsSlice = createSlice({
   },
 });
 
-export const { setStationsForViewPort } = stationsSlice.actions;
 export default stationsSlice.reducer;

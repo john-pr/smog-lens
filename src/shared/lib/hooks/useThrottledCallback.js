@@ -1,9 +1,15 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect } from "react";
 
 function useThrottledCallback(cb, ms) {
   const lastRef = useRef(0);
   const timerRef = useRef(null);
   const pendingRef = useRef(null);
+  const cbRef = useRef(cb);
+
+  // Keep cbRef in sync with the latest callback
+  useEffect(() => {
+    cbRef.current = cb;
+  }, [cb]);
 
   return useCallback((...args) => {
     const now = performance.now();
@@ -13,7 +19,7 @@ function useThrottledCallback(cb, ms) {
 
     if (remaining <= 0) {
       lastRef.current = now;
-      cb(...args);
+      cbRef.current(...args);
       pendingRef.current = null;
       return;
     }
@@ -22,11 +28,11 @@ function useThrottledCallback(cb, ms) {
       timerRef.current = setTimeout(() => {
         timerRef.current = null;
         lastRef.current = performance.now();
-        if (pendingRef.current) cb(...pendingRef.current);
+        if (pendingRef.current) cbRef.current(...pendingRef.current);
         pendingRef.current = null;
       }, remaining);
     }
-  }, [cb, ms]);
+  }, [ms]);
 }
 
 export { useThrottledCallback };

@@ -4,7 +4,6 @@ import circleSvg from "@assets/mapMarkers/circleMarker.svg?raw";
 import { getMarkerColorFromIndexValue } from "@shared/lib/utils/colors.js";
 import { useNavigate } from "react-router";
 import { useMemo, useRef, useEffect } from "react";
-import StationPopup from "../popups/StationPopup.jsx";
 
 
 const buildIcon = (color) =>
@@ -24,11 +23,10 @@ const StationMarker = ({
       station,
       indexValue,
       isSelected,
-      isInitialUrlEntry,
+      _isInitialUrlEntry,
 }) => {
    const map = useMap();
    const markerRef = useRef(null);
-   const hasOpenedForUrlEntry = useRef(false);
    const navigate = useNavigate();
    const color = getMarkerColorFromIndexValue(indexValue);
    const icon = useMemo(() => buildIcon(color), [color]);

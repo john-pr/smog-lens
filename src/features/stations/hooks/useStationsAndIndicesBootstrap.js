@@ -13,7 +13,8 @@ export function useStationsAndIndicesBootstrap() {
     if (status !== "succeeded") return;
     if (!stations.length) return;
 
-    // const stationIds = stations.map((s) => String(s.id));
+    // Intentionally limited to 10 stations for performance during initial load
+    // const stationIds = stations.map((s) => String(s.id)); // ALL stations
     const stationIds = stations
       .slice(0, 10)
       .map((s) => String(s.id));
@@ -35,7 +36,9 @@ export function useStationsAndIndicesBootstrap() {
     }, 300);
 
     return () => clearInterval(intervalId);
-  }, [status, stations, dispatch, indicesById]);
+    // indicesById intentionally omitted - only used for conditional check, prevents cascading re-runs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, stations, dispatch]);
 
   return { stations, indicesById, status, error };
 }

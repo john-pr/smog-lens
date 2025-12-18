@@ -1,4 +1,4 @@
-import { showErrorToast } from "../../../app/ToastContext";
+import { showErrorToast } from "@app/ToastContext";
 
 const BASE = "/gios/pjp-api/v1/rest";
 
