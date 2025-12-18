@@ -102,12 +102,11 @@ const MapPage = () => {
             setSelectedMapLayer(savedLayer);
         }
         setIsLayerReady(true);
-    }, []);
 
-    // Initialize geoConsent as null (prompt state) - don't query permissions on mount
-    // iOS Safari requires user gesture before showing permission prompt
-    useEffect(() => {
+        // Initialize geoConsent as null (prompt state) - don't query permissions on mount
+        // iOS Safari requires user gesture before showing permission prompt
         setGeoConsent(null);
+        setIsBrowserBlocked(false);
     }, []);
 
     const isIOS = () => {
@@ -169,11 +168,15 @@ const MapPage = () => {
     };
 
     const handleGeoButtonClick = () => {
+        console.log("handleGeoButtonClick - geoConsent:", geoConsent, "isBrowserBlocked:", isBrowserBlocked);
+
         if (geoConsent === false || isBrowserBlocked) {
             // Location is blocked, show instructions modal
+            console.log("Location is blocked, showing modal");
             setShowBlockedModal(true);
         } else {
             // Location enabled or prompt state - try to get location and zoom
+            console.log("Calling getUserLocation");
             getUserLocation(true);
         }
     };
@@ -209,6 +212,13 @@ const MapPage = () => {
               onClose={handleBlockedModalClose}
             />
           )}
+          {/* Debug overlay */}
+          <div className="fixed bottom-2.5 left-2.5 bg-black/80 text-white text-xs p-2 rounded max-w-xs z-50 font-mono">
+            <div>geoConsent: {JSON.stringify(geoConsent)}</div>
+            <div>isBrowserBlocked: {isBrowserBlocked}</div>
+            <div>isIOS: {isIOS()}</div>
+            <div>protocol: {window.location.protocol}</div>
+          </div>
           <LeftPanel stationId={stationId} indicesById={indicesById} />
           <MapControls
             geoConsent={geoConsent}
