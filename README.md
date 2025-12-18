@@ -1,4 +1,4 @@
-# Smog Lens (Active Air)
+# Active Air
 
 A modern React-based air quality monitoring application that displays real-time air pollution data from Polish GIOS (Główny Inspektorat Ochrony Środowiska) API. Features an interactive map with station clustering, dark/light theme support, and multi-language interface.
 
