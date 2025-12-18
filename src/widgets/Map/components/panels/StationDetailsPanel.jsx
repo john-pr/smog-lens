@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import MeasurementChart from "@widgets/MeasurementChart/MeasurementChart.jsx";
 import { getThresholdPercentage } from "@shared/lib/utils/pollutantUtils.js";
 import { ThemeContext } from "@app/ThemeContext.jsx";
+import { Heart, Activity, ChevronDown } from "lucide-react";
 
 const StationDetailsPanel = ({ stationId, indexValue }) => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,8 @@ const StationDetailsPanel = ({ stationId, indexValue }) => {
     no2: false,
     so2: false,
   });
+  const [showAqiInfo, setShowAqiInfo] = useState(false);
+  const [showNormPercentage, setShowNormPercentage] = useState({});
 
   const details = useAppSelector((state) =>
     selectDetailsForStation(state, stationId)
@@ -65,6 +68,18 @@ const StationDetailsPanel = ({ stationId, indexValue }) => {
     }
   };
 
+  const getAqiRecommendations = (value) => {
+    const recommendations = {
+      0: { health: "legend.health_very_good", activity: "legend.activity_very_good" },
+      1: { health: "legend.health_good", activity: "legend.activity_good" },
+      2: { health: "legend.health_moderate", activity: "legend.activity_moderate" },
+      3: { health: "legend.health_sufficient", activity: "legend.activity_sufficient" },
+      4: { health: "legend.health_bad", activity: "legend.activity_bad" },
+      5: { health: "legend.health_very_bad", activity: "legend.activity_very_bad" },
+    };
+    return recommendations[value] || null;
+  };
+
   const getPollutantColor = (key) => {
     const colors = {
       light: {
@@ -89,12 +104,29 @@ const StationDetailsPanel = ({ stationId, indexValue }) => {
   const aqiBgColor = { backgroundColor: aqiColor + "20", borderColor: aqiColor };
   const aqiTextColor = { color: aqiColor };
   const aqiLabel = getAqiLabel(indexValue);
+  const aqiRecs = getAqiRecommendations(indexValue);
 
   return (
     <div className="space-y-4 text-sm text-gray-900 dark:text-gray-100">
       <div className="p-4 border rounded" style={aqiBgColor}>
-        <div className="mb-2 text-xs font-semibold uppercase" style={{ color: aqiColor }}>
-          {t("station_popup.aqi")}
+        <div className="flex items-start justify-between mb-2">
+          <div className="text-xs font-semibold uppercase" style={{ color: aqiColor }}>
+            {t("station_popup.aqi")}
+          </div>
+          {aqiRecs && (
+            <button
+              onClick={() => setShowAqiInfo(!showAqiInfo)}
+              className="flex items-center justify-center w-5 h-5 rounded-full border transition-colors cursor-pointer"
+              style={{
+                borderColor: aqiColor,
+                color: aqiColor,
+                backgroundColor: showAqiInfo ? aqiColor + "20" : "transparent"
+              }}
+              title={t("station_popup.aqi_info")}
+            >
+              <span className="text-xs font-bold">i</span>
+            </button>
+          )}
         </div>
         <div className="mb-2 text-3xl font-bold" style={aqiTextColor}>
           {indexValue ?? t("station_popup.no_index")}
@@ -102,6 +134,18 @@ const StationDetailsPanel = ({ stationId, indexValue }) => {
         <div className="text-sm font-semibold" style={aqiTextColor}>
           {t(aqiLabel)}
         </div>
+        {aqiRecs && showAqiInfo && (
+          <div className="space-y-2 text-xs mt-3 pt-3 border-t" style={{ borderColor: aqiColor + "40" }}>
+            <div className="flex gap-2 opacity-85">
+              <Heart size={14} strokeWidth={2.5} className="shrink-0 mt-0.5" style={{ color: aqiColor }} />
+              <span>{t(aqiRecs.health)}</span>
+            </div>
+            <div className="flex gap-2 opacity-85">
+              <Activity size={14} strokeWidth={2.5} className="shrink-0 mt-0.5" style={{ color: aqiColor }} />
+              <span>{t(aqiRecs.activity)}</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {status === "loading" && (
@@ -157,17 +201,36 @@ const StationDetailsPanel = ({ stationId, indexValue }) => {
                   const pollutantColor = getPollutantColor(key);
                   const currentValue = data[data.length - 1]?.value;
                   const thresholdPercentage = getThresholdPercentage(currentValue, key);
+                  const showPercent = showNormPercentage[key];
                   return (
                     <div key={key} className="flex items-center justify-between text-xs">
                       <span style={{ color: pollutantColor }}>{label}</span>
-                      <div className="flex flex-col items-end gap-0.5">
-                        <span className="font-semibold" style={{ color: pollutantColor }}>
-                          {currentValue?.toFixed(1)} µg/m³
-                        </span>
-                        {thresholdPercentage !== null && (
-                          <span className="text-xs opacity-75" style={{ color: pollutantColor }}>
-                            {thresholdPercentage}% {t("station_popup.of_norm")}
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex flex-col items-end gap-0.5">
+                          <span className="font-semibold" style={{ color: pollutantColor }}>
+                            {currentValue?.toFixed(1)} µg/m³
                           </span>
+                          {thresholdPercentage !== null && showPercent && (
+                            <span className="text-xs opacity-75" style={{ color: pollutantColor }}>
+                              {thresholdPercentage}% {t("station_popup.of_norm")}
+                            </span>
+                          )}
+                        </div>
+                        {thresholdPercentage !== null && (
+                          <button
+                            onClick={() => setShowNormPercentage(prev => ({
+                              ...prev,
+                              [key]: !prev[key]
+                            }))}
+                            className="shrink-0 flex items-center justify-center transition-transform cursor-pointer hover:opacity-70"
+                            style={{
+                              color: pollutantColor,
+                              transform: showPercent ? "rotate(180deg)" : "rotate(0deg)"
+                            }}
+                            title={t("station_popup.show_norm")}
+                          >
+                            <ChevronDown size={14} strokeWidth={2} />
+                          </button>
                         )}
                       </div>
                     </div>
