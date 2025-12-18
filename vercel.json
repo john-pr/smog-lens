@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/gios/(.*)", "destination": "https://api.gios.gov.pl/$1" }
+  ]
+}
